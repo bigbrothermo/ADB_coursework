@@ -23,6 +23,7 @@ private:
 	PageID LeftmostPid;
 	RecordID dataRid;
 	RecordID currentRid;
+	RecordID previousRid;
 
 	BTreeFile * bt;
 
@@ -52,6 +53,11 @@ private:
 		this->bt=input_bt;
 
 	}
+	/*void displaykey(){
+		cout<<"key:"<<current_key<<endl;
+		cout<<"PageNo:"<<dataRid.PageNo<<endl;
+		cout<<":"<<dataRid.SlotNo<<endl;
+	}*/
 
 	
 

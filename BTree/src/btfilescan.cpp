@@ -44,8 +44,12 @@ BTreeFileScan::GetNext(RecordID& rid, int& key)
     //PageID currentPid;
     //RecordID currentRid;
     BTLeafPage *btleaf;
+    int prev_key;
+    RecordID prev_rid;
 
     Status s;
+
+    previousRid=currentRid;
 
 
 
@@ -54,6 +58,7 @@ BTreeFileScan::GetNext(RecordID& rid, int& key)
     	this->currentPid=this->LeftmostPid;
     	PIN(currentPid,btleaf);
 
+    	previousRid=currentRid;
     	while(btleaf->GetFirst(key,dataRid,currentRid)!=OK){// Search the fisrt page
     		this->current_key=key;
     		PageID nextPID=btleaf->GetNextPage();
@@ -69,6 +74,7 @@ BTreeFileScan::GetNext(RecordID& rid, int& key)
     		PIN(currentPid,btleaf);
 
     	}
+    	
 
     	this->current_key=key;
 
@@ -108,6 +114,7 @@ BTreeFileScan::GetNext(RecordID& rid, int& key)
 			}
 			else{
 				// Keep getting the next record until find the key 
+				previousRid=currentRid;
 				while (btleaf->GetNext(key,dataRid,currentRid) != DONE){
 					this->current_key=key;
 					if (*lowKey<=key) {
@@ -124,6 +131,7 @@ BTreeFileScan::GetNext(RecordID& rid, int& key)
 							return DONE;
 						}
 					}
+					previousRid=currentRid;
 				}
 				this->current_key=key;
 				endflag = 1;
@@ -142,6 +150,7 @@ BTreeFileScan::GetNext(RecordID& rid, int& key)
     	//The scan have started
     	std::cout<<"begin next "<<endl;
     	PIN(this->currentPid,btleaf);
+    	previousRid=currentRid;
     	s=btleaf->GetNext(key,dataRid,currentRid);
     	this->current_key=key;
     	while(s!=DONE && btleaf->GetNextPage()!=INVALID_PAGE){
@@ -150,6 +159,7 @@ BTreeFileScan::GetNext(RecordID& rid, int& key)
 			currentPid = nextPID;
 
 			PIN(currentPid, btleaf);
+			previousRid=currentRid;
 			s = btleaf->GetFirst(key,dataRid,currentRid);
 			this->current_key=key;
 
@@ -205,7 +215,6 @@ BTreeFileScan::DeleteCurrent()
     // TODO: add your code here
 
 
-
 	if(startflag==0){
 		std::cerr<<"The scan have not started"<<std::endl;
 		return FAIL;
@@ -217,9 +226,15 @@ BTreeFileScan::DeleteCurrent()
 			return FAIL;
 		}
 
+		currentRid=previousRid;
+
+
+
 
 
 	}
+
+
 
     return OK;
 }
