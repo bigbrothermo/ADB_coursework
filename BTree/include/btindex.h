@@ -41,6 +41,42 @@ public:
 	PageID returnpage(){
 		return this->pid;
 	}
+
+
+
+	Status GetPageID (const int *key, PageID& pid)
+{
+
+
+	IndexEntry* current_Key=new IndexEntry;
+	//current_Key->key=*key;
+	//current_Key->pid=pid;
+
+	
+	// A sequential search is implemented here.  You can modify it
+	// to a binary search if you like.
+	
+	for (int i = numOfSlots - 1; i >= 0; i--)
+	{
+		current_Key=GetEntry(i);
+		
+		if (*key-current_Key->key >= 0)
+		{	
+			//current_Key=GetEntry(i);
+			pid=current_Key->pid;
+			return OK;
+		}
+	}
+	
+	// If we reach this point, then the page we should follow in our 
+	// B+tree search must be the leftmost child of this page.
+	
+	pid = GetLeftLink();
+	return OK;
+}
+
+
+
 };
 
 #endif

@@ -27,13 +27,7 @@ public:
 	Status DumpStatistics();
 
 
-	//added
-	Status RecursiveDestory(PageID targetPid);
-	Status LeafSplit(BTLeafPage * OriginLeaf,BTLeafPage * NewLeaf,PageID &newpid, const int key,const RecordID rid);
-	Status IndexSplit(BTIndexPage * OriginIndex,BTIndexPage * NewIndex,PageID &newpid, const int key,const RecordID rid);
-	PageID Returnroot(){
-		return this->rootPid;
-	}
+	
 
 	
 
@@ -48,6 +42,19 @@ private:
 	
 	Status PrintTree(PageID pid);
 	Status PrintNode(PageID pid);
+
+	//added
+	Status RecursiveDestory(PageID targetPid);
+	Status LeafSplit(BTLeafPage * OriginLeaf,BTLeafPage * NewLeaf,PageID &newpid, const int key,const RecordID rid);
+	Status IndexSplit(BTIndexPage * OriginIndex,BTIndexPage * NewIndex,PageID &newpid, const int key,const PageID pageid);
+	PageID Returnroot(){
+		return this->rootPid;
+	}
+	Status search(const int* key,PageID& targetPid);
+	Status recursive_search(const int* key,PageID& targetPid,PageID currentPid);
+	
+
+	
 
 
 };

@@ -36,3 +36,33 @@ struct IndexEntry {
 		cerr << "Unable to delete in " << __FILE__ << ":" << __LINE__; return FAIL; }}
 
 #endif
+
+/*void GetKeyData (char *key, DataType *data, KeyDataEntry *pair, int len, NodeType nodeType)
+{
+	int dataLen;
+	int keyLen;
+	
+	switch(nodeType) 
+	{
+	
+	case INDEX_NODE:
+		dataLen = sizeof(PageID);
+		break;
+	
+	case LEAF_NODE:
+		dataLen = sizeof(RecordID);
+		break;
+	
+	default:
+		assert(0);
+	}
+	
+	keyLen = len - dataLen;
+
+	if (key)
+		memcpy(key, pair, keyLen);
+
+	if (data)
+		memcpy(data, ((char*)pair) + keyLen, dataLen);
+}*/
+
